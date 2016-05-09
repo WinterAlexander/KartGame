@@ -2,6 +2,7 @@ package org.wintermartens.kartgame;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -24,7 +25,9 @@ public class KartGame extends ApplicationAdapter
 	@Override
 	public void create()
 	{
-		this.textures = new HashMap<String, Texture>();
+		this.textures = new HashMap<>();
+
+		Gdx.input.setInputProcessor(new GameInput(this));
 
 		textures.put("kart", new Texture("kart.png"));
 		textures.put("map", new Texture("map.png"));

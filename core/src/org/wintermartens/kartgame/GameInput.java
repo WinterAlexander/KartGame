@@ -16,12 +16,14 @@ public class GameInput implements InputProcessor
 	private KartGame game;
 
 	private Vector3 touchPos;
+	private Vector2 clickLoc;
 
 	public GameInput(KartGame game)
 	{
 		this.game = game;
 
 		touchPos = new Vector3();
+		clickLoc = new Vector2();
 	}
 
 	//region Keyboard
@@ -55,7 +57,32 @@ public class GameInput implements InputProcessor
 
 		if(Gdx.input.isKeyPressed(Input.Keys.S))
 		{
-			//game.getRace().getSpawnPoints().add();
+			game.getCamera().unproject(touchPos);
+			clickLoc.set(touchPos.x, touchPos.y);
+			game.getRace().getSpawnPoints().add(clickLoc.cpy());
+			return true;
+		}
+
+		if(Gdx.input.isKeyPressed(Input.Keys.L))
+		{
+			game.getCamera().unproject(touchPos);
+			clickLoc.set(touchPos.x, touchPos.y);
+			game.getRace().getLines().add(new RaceLine(clickLoc.cpy(), null));
+			return true;
+		}
+
+		if(Gdx.input.isKeyPressed(Input.Keys.E))
+		{
+			game.getCamera().unproject(touchPos);
+			clickLoc.set(touchPos.x, touchPos.y);
+			for(RaceLine line : game.getRace().getLines())
+				if(line.getLoc2() == null)
+				{
+					line.setLoc2(clickLoc.cpy());
+					break;
+				}
+
+			return true;
 		}
 		return false;
 	}
