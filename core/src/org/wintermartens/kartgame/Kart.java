@@ -2,16 +2,19 @@ package org.wintermartens.kartgame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-
 /**
  * Created by Cedric Martens on 2016-05-09.
  */
 public class Kart extends Sprite
 {
-	private float yaw;
+	private KartGame kartgame;
+
+	private Vector2 position;
+	private float yaw; //in radians (direction)
 
 	private Vector2 movement;
 	private float topSpeed;
@@ -19,54 +22,47 @@ public class Kart extends Sprite
 	private float acceleration;
 	private float deceleration;
 
-	private float reverseAcceleration;
-	private float reverseTopSpeed;
-
 	private float turning;
 	private float brakeSpeed;
 
-	private float x;
-	private float y;
-
-	private Race race;
-
-	private float direction; //in radians
+	private float reverseAcceleration;
+	private float reverseTopSpeed;
 
 	private int currentLineId;
 	private int currentLap;
 
 	private Vector2 baseLoc;
-	private KartGame kartgame;
 
-	public Kart(KartGame kartgame, float topSpeed, float acceleration, float deceleration, float turning, float brakeSpeed, float direction, Race race)
+	public Kart(KartGame kartgame, Vector2 position, float yaw, float topSpeed, float acceleration, float deceleration, float turning, float brakeSpeed, int currentLineId, int currentLap)
 	{
+		//super(kartgame.getTexture());
+
 		this.kartgame = kartgame;
 
+		this.position = position;
+		this.yaw = yaw;
+		this.movement = new Vector2(0, 0);
 		this.topSpeed = topSpeed;
 		this.acceleration = acceleration;
 		this.deceleration = deceleration;
-
 		this.turning = turning;
 		this.brakeSpeed = brakeSpeed;
-
-		this.reverseAcceleration = acceleration / 3;
-		this.reverseTopSpeed = topSpeed / 3;
-
-		this.direction = direction;
-
-		this.race = race;
-
-		this.movement = new Vector2(0,0);
+		this.reverseAcceleration = acceleration / 2;
+		this.reverseTopSpeed = topSpeed / 2;
+		this.currentLineId = currentLineId;
+		this.currentLap = currentLap;
+		this.baseLoc = new Vector2(position);
 	}
 
 	public void update(long deltaTime)
 	{
-		this.movement = getDirection(this.direction);
+		this.movement = getDirection(this.yaw);
 		move(deltaTime);
 	}
 
 	public void turn(long delta, boolean clockwise)
 	{
+
 
 	}
 
@@ -109,8 +105,154 @@ public class Kart extends Sprite
 
 	}
 
+	@Override
+	public void draw(Batch batch)
+	{
+
+	}
+
 	private Vector2 getDirection(float direction)
 	{
-		return new Vector2(this.x + MathUtils.cos(direction), this.y + MathUtils.sin(direction));
+		return new Vector2(position.x + MathUtils.cos(direction), position.y + MathUtils.sin(direction));
+	}
+
+	public KartGame getKartgame()
+	{
+		return kartgame;
+	}
+
+	public void setKartgame(KartGame kartgame)
+	{
+		this.kartgame = kartgame;
+	}
+
+	public Vector2 getPosition()
+	{
+		return position;
+	}
+
+	public void setPosition(Vector2 position)
+	{
+		this.position = position;
+	}
+
+	public float getYaw()
+	{
+		return yaw;
+	}
+
+	public void setYaw(float yaw)
+	{
+		this.yaw = yaw;
+	}
+
+	public Vector2 getMovement()
+	{
+		return movement;
+	}
+
+	public void setMovement(Vector2 movement)
+	{
+		this.movement = movement;
+	}
+
+	public float getTopSpeed()
+	{
+		return topSpeed;
+	}
+
+	public void setTopSpeed(float topSpeed)
+	{
+		this.topSpeed = topSpeed;
+	}
+
+	public float getAcceleration()
+	{
+		return acceleration;
+	}
+
+	public void setAcceleration(float acceleration)
+	{
+		this.acceleration = acceleration;
+	}
+
+	public float getDeceleration()
+	{
+		return deceleration;
+	}
+
+	public void setDeceleration(float deceleration)
+	{
+		this.deceleration = deceleration;
+	}
+
+	public float getTurning()
+	{
+		return turning;
+	}
+
+	public void setTurning(float turning)
+	{
+		this.turning = turning;
+	}
+
+	public float getBrakeSpeed()
+	{
+		return brakeSpeed;
+	}
+
+	public void setBrakeSpeed(float brakeSpeed)
+	{
+		this.brakeSpeed = brakeSpeed;
+	}
+
+	public float getReverseAcceleration()
+	{
+		return reverseAcceleration;
+	}
+
+	public void setReverseAcceleration(float reverseAcceleration)
+	{
+		this.reverseAcceleration = reverseAcceleration;
+	}
+
+	public float getReverseTopSpeed()
+	{
+		return reverseTopSpeed;
+	}
+
+	public void setReverseTopSpeed(float reverseTopSpeed)
+	{
+		this.reverseTopSpeed = reverseTopSpeed;
+	}
+
+	public int getCurrentLineId()
+	{
+		return currentLineId;
+	}
+
+	public void setCurrentLineId(int currentLineId)
+	{
+		this.currentLineId = currentLineId;
+	}
+
+	public int getCurrentLap()
+	{
+		return currentLap;
+	}
+
+	public void setCurrentLap(int currentLap)
+	{
+		this.currentLap = currentLap;
+	}
+
+	public Vector2 getBaseLoc()
+	{
+		return baseLoc;
+	}
+
+	public void setBaseLoc(Vector2 baseLoc)
+	{
+		this.baseLoc = baseLoc;
 	}
 }

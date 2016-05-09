@@ -38,4 +38,24 @@ public class KartGame extends ApplicationAdapter
 	{
 
 	}
+
+	public Kart getKart()
+	{
+		return kart;
+	}
+
+	public void setKart(Kart kart)
+	{
+		this.kart = kart;
+	}
+
+	public Race getRace()
+	{
+		return race;
+	}
+
+	public void setRace(Race race)
+	{
+		this.race = race;
+	}
 }
