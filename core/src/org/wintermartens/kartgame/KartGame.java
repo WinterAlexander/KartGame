@@ -3,9 +3,11 @@ package org.wintermartens.kartgame;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +15,7 @@ import java.util.Map;
 public class KartGame extends ApplicationAdapter
 {
 	private SpriteBatch batch;
+	private OrthographicCamera camera;
 	private Map<String, Texture> textures;
 
 	private Kart kart;
@@ -24,17 +27,27 @@ public class KartGame extends ApplicationAdapter
 		this.textures = new HashMap<String, Texture>();
 
 		textures.put("kart", new Texture("kart.png"));
-		//this.race = new Race();
-		//this.kart = new Kart(this, );
+		textures.put("map", new Texture("map.png"));
+		this.race = new Race(this, null, 0, 0);
+		this.kart = new Kart(this, new Vector2(), 0, 1, 0.01f, 1, 0, 0, 0, 0);
 		batch = new SpriteBatch();
+		camera = new OrthographicCamera(1280, 720);
+		camera.translate(1280 / 2, 720 / 2);
 	}
 
 	@Override
 	public void render()
 	{
-		batch.begin();
+		Gdx.gl.glClearColor(1, 1, 1, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		camera.update();
+		batch.setProjectionMatrix(camera.combined);
 
+		batch.begin();
+		race.draw(batch);
+		kart.draw(batch);
 		batch.end();
+
 		kart.update(Gdx.graphics.getDeltaTime());
 	}
 
