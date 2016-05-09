@@ -11,8 +11,6 @@ public class Race
 	private Array<RaceLine> lines;
 	private long start;
 	private long finish;
-	//private Map map;
-
 
 	public Race(KartGame kartGame, Array<RaceLine> lines, long start, long finish)
 	{
