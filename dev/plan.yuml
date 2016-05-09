@@ -3,4 +3,4 @@
 //turning is the rotation of the kart per seconds (in rad or degree)
 [Kart|KartGame game; float yaw; Vector2 speed; float topSpeed; float acceleration; float turning; float deceleration; float brakeSpeed; int currentLineId; int currentLap; Vector2 baseLoc|void update(long delta); void turn(long delta boolean clockwise); void move(long delta); void replace();]->[Sprite]
 [RaceLine|Race race; Vector2 loc1; Vector2 loc2|boolean cross(Kart kart Vector2 vector); Vector2 getCenter()]
-[Race|KartGame game; Array RaceLine lines; long start; long finish;|boolean getRoadSpeed(); void draw(SpriteBatch batch)]
+[Race|KartGame game; Array RaceLine lines; Map map; long start; long finish;|boolean getRoadSpeed(); void draw(SpriteBatch batch)]

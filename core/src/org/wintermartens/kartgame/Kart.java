@@ -1,11 +1,12 @@
 package org.wintermartens.kartgame;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 
 /**
  * Created by Cedric Martens on 2016-05-09.
  */
-public class Kart
+public class Kart extends Sprite
 {
 	private float yaw;
 
@@ -32,5 +33,25 @@ public class Kart
 		this.deceleration = deceleration;
 		this.turning = turning;
 		this.brakeSpeed = brakeSpeed;
+	}
+
+	public void update(long deltaTime)
+	{
+
+	}
+
+	public void turn(long delta, boolean clockwise)
+	{
+
+	}
+
+	public void move(long deltaTime)
+	{
+
+	}
+
+	public void replace()
+	{
+
 	}
 }

@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class KartGame extends ApplicationAdapter
 {
+	private Kart kart;
+	private Race race;
 
 	@Override
 	public void create()
@@ -25,5 +27,15 @@ public class KartGame extends ApplicationAdapter
 	public void dispose()
 	{
 		super.dispose();
+	}
+
+	private void finish()
+	{
+
+	}
+
+	private void start()
+	{
+
 	}
 }
