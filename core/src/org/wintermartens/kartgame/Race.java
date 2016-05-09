@@ -9,8 +9,14 @@ public class Race
 {
 	private KartGame kartGame;
 	private Array<RaceLine> lines;
+
 	private long start;
 	private long finish;
+
+	private float startX;
+	private float startY;
+
+	private float startDirection;
 
 	public Race(KartGame kartGame, Array<RaceLine> lines, long start, long finish)
 	{
