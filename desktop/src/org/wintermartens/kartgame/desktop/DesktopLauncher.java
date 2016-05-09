@@ -17,7 +17,7 @@ public class DesktopLauncher
 		config.width = 1280;
 		config.height = 720;
 
-		while(config.width > screenSize.width - 64 || config.height > screenSize.height - 64)
+		while(config.width > screenSize.width * 7 / 8 || config.height > screenSize.height * 7 / 8)
 		{
 			config.width -= 16;
 			config.height -= 9;

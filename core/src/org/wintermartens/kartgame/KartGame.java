@@ -28,7 +28,10 @@ public class KartGame extends ApplicationAdapter
 
 		textures.put("kart", new Texture("kart.png"));
 		textures.put("map", new Texture("map.png"));
-		this.race = new Race(this, null, 0, 0);
+		textures.put("spawnpoint", new Texture("debug_spawnpoint.png"));
+		textures.put("line1", new Texture("debug_line1.png"));
+		textures.put("line2", new Texture("debug_line2.png"));
+		this.race = new Race(this);
 		this.kart = new Kart(this, new Vector2(), 0, 1, 0.01f, 1, 0, 0, 0, 0);
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera(1280, 720);
@@ -93,5 +96,10 @@ public class KartGame extends ApplicationAdapter
 	public void setRace(Race race)
 	{
 		this.race = race;
+	}
+
+	public OrthographicCamera getCamera()
+	{
+		return camera;
 	}
 }
