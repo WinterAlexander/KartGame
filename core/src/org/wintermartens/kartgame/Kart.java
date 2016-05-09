@@ -62,8 +62,12 @@ public class Kart extends Sprite
 
 	public void turn(long delta, boolean clockwise)
 	{
+		int dir = 1;
 
+		if(clockwise)
+			dir = -1;
 
+		yaw += dir * turning * delta;
 	}
 
 	public void move(long deltaTime)
