@@ -16,6 +16,8 @@ public class Kart
 {
 	private KartGame kartgame;
 
+	private Texture texture;
+
 	private Vector2 position;
 	private float yaw; //in radians (direction)
 
@@ -40,6 +42,7 @@ public class Kart
 	{
 		this.kartgame = kartgame;
 
+		this.texture = this.kartgame.getTexture("kart");
 		this.position = position;
 		this.yaw = yaw;
 		this.movement = new Vector2(0, 0);
@@ -55,13 +58,13 @@ public class Kart
 		this.baseLoc = new Vector2(position);
 	}
 
-	public void update(long deltaTime)
+	public void update(float deltaTime)
 	{
 		this.movement = getDirection(this.yaw);
 		move(deltaTime);
 	}
 
-	public void turn(long delta, boolean clockwise)
+	public void turn(float delta, boolean clockwise)
 	{
 		int dir = 1;
 
@@ -71,7 +74,7 @@ public class Kart
 		yaw += dir * turning * delta;
 	}
 
-	public void move(long deltaTime)
+	public void move(float deltaTime)
 	{
 		//Brake has priority over acceleration button
 		//Would be nice to be able to configure keys in menu
@@ -104,7 +107,6 @@ public class Kart
 		position.add(movement.x, movement.y);
 	}
 
-
 	private void decelerate()
 	{
 
@@ -112,7 +114,7 @@ public class Kart
 
 	public void draw(SpriteBatch batch)
 	{
-		//batch.draw(kartgame.getTexture("kart"));
+		batch.draw(texture, position.x, position.y, texture.getWidth(), texture.getHeight());
 	}
 
 	private Vector2 getDirection(float direction)
