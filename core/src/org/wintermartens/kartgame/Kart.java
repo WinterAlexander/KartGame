@@ -2,14 +2,17 @@ package org.wintermartens.kartgame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 /**
  * Created by Cedric Martens on 2016-05-09.
  */
-public class Kart extends Sprite
+public class Kart
 {
 	private KartGame kartgame;
 
@@ -35,8 +38,6 @@ public class Kart extends Sprite
 
 	public Kart(KartGame kartgame, Vector2 position, float yaw, float topSpeed, float acceleration, float deceleration, float turning, float brakeSpeed, int currentLineId, int currentLap)
 	{
-		//super(kartgame.getTexture());
-
 		this.kartgame = kartgame;
 
 		this.position = position;
@@ -100,7 +101,7 @@ public class Kart extends Sprite
 	 */
 	private void accelerate()
 	{
-		//speed.add() will need to know which direction in rad the car faces, come talk to me if you read this
+		position.add(movement.x, movement.y);
 	}
 
 
@@ -109,10 +110,9 @@ public class Kart extends Sprite
 
 	}
 
-	@Override
-	public void draw(Batch batch)
+	public void draw(SpriteBatch batch)
 	{
-
+		//batch.draw(kartgame.getTexture("kart"));
 	}
 
 	private Vector2 getDirection(float direction)
