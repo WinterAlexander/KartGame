@@ -2,10 +2,16 @@ package org.wintermartens.kartgame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.TimeUtils;
+
 /**
  *
  * Created by Cedric Martens on 2016-05-09.
@@ -37,6 +43,7 @@ public class Kart
 	private int currentLap;
 
 	private Vector2 baseLoc;
+	private ParticleEffect fuel;
 
 	/**
 	 * Creates a new kart
@@ -67,11 +74,28 @@ public class Kart
 		this.currentLineId = currentLineId;
 		this.currentLap = currentLap;
 		this.baseLoc = new Vector2(position);
+
+		fuel = new ParticleEffect();
+		fuel.load(Gdx.files.internal("Effects/fuel.p"), Gdx.files.internal("Effects"));
+		fuel.start();
+
+
+
+
+
 	}
 
 	public void update(float deltaTime)
 	{
 		move(deltaTime);
+		fuel.setPosition(this.position.x, this.position.y);
+		//fuel.scaleEffect(Math.max(movement.len() / topSpeed * 10, 0.01f));
+		//il reste des tweaks a faire au niveau du sable
+
+		for (int i = 0; i < fuel.getEmitters().size; i++) { //get the list of emitters - things that emit particles
+			fuel.getEmitters().get(i).getAngle().setLow(MathUtils.radiansToDegrees * yaw - 180); //low is the minimum rotation
+			fuel.getEmitters().get(i).getAngle().setHigh(MathUtils.radiansToDegrees * yaw - 180); //high is the max rotation
+		}
 	}
 
 	public void turn(float delta, boolean clockwise)
@@ -124,17 +148,21 @@ public class Kart
 		if(brake)
 		{
 			movement.setLength(movement.len() - deceleration * brakeSpeed * deltaTime);
-			System.out.println(" (Braking)Length : " + movement.len());
 		}
 		else
 		{
 			movement.setLength(movement.len() - deceleration * deltaTime);
-			System.out.println("Length : " + movement.len());
 		}
 	}
 
 	public void draw(SpriteBatch batch)
 	{
+
+		if(fuel.isComplete())
+			fuel.reset();
+
+		fuel.draw(batch, Gdx.graphics.getDeltaTime());
+
 		batch.draw(texture,
 				position.x - width / 2, position.y - height / 2,
 				width / 2, height / 2,
