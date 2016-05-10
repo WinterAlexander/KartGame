@@ -2,14 +2,12 @@ package org.wintermartens.kartgame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 /**
+ *
  * Created by Cedric Martens on 2016-05-09.
  */
 public class Kart
@@ -20,6 +18,8 @@ public class Kart
 
 	private Vector2 position;
 	private float yaw; //in radians (direction)
+
+	private float width, height;
 
 	private Vector2 movement;
 	private float topSpeed;
@@ -58,7 +58,7 @@ public class Kart
 		this.texture = this.kartgame.getTexture("kart");
 		this.position = position;
 		this.yaw = yaw;
-		this.movement = new Vector2(0, 0);
+		this.movement = new Vector2();
 		this.topSpeed = topSpeed;
 		this.acceleration = acceleration;
 		this.deceleration = deceleration;
@@ -73,7 +73,6 @@ public class Kart
 
 	public void update(float deltaTime)
 	{
-		this.movement = getDirection(this.yaw);
 		move(deltaTime);
 	}
 
@@ -84,7 +83,7 @@ public class Kart
 		if(clockwise)
 			dir = -1;
 
-		yaw += dir * turning * delta * this.getSpeed();
+		yaw += dir * turning * delta * movement.len();
 	}
 
 	public void move(float deltaTime)
@@ -100,12 +99,19 @@ public class Kart
 			//then if the key is still pressed after 0.x seconds
 			//Start being in reverse mode
 
-		}else if(Gdx.input.isKeyPressed(Input.Keys.SPACE)
-		|| Gdx.input.isKeyPressed(Input.Keys.UP))
-		{
-			accelerate(deltaTime);
 		}
+		else if(Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isKeyPressed(Input.Keys.UP))
+			accelerate(deltaTime);
+		else
+			decelerate();
 
+		if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
+			yaw += 0.1;
+
+		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+			yaw -= 0.1;
+
+		position.add(movement.x * deltaTime, movement.y * deltaTime);
 	}
 
 	public void replace()
@@ -118,17 +124,14 @@ public class Kart
 	 */
 	private void accelerate(float deltaTime)
 	{
-
-		if(!(getSpeed() >= this.topSpeed))
+		if(movement.isZero())
 		{
-			movement.x *= acceleration;
-			movement.y *= acceleration;
-			System.out.println("Test");
+			movement.set(acceleration, 0);
+			movement.setAngleRad(yaw);
 		}
 
-		System.out.println(getSpeed() + " " + topSpeed);
-		System.out.println(movement.x);
-		position.add(movement.x * deltaTime, movement.y * deltaTime);
+		if(movement.len() < topSpeed)
+			movement.setLength(movement.len() + acceleration);
 	}
 
 	private void decelerate()
@@ -138,19 +141,12 @@ public class Kart
 
 	public void draw(SpriteBatch batch)
 	{
-		batch.draw(texture, position.x, position.y, texture.getWidth(), texture.getHeight());
+		batch.draw(texture, position.x - 30, position.y - 20, 60, 40);
 	}
 
 	private Vector2 getDirection(float direction)
 	{
 		return new Vector2((position.x + MathUtils.cos(direction)) * 3f, (position.y + MathUtils.sin(direction)) * 3f);
-	}
-
-	public float getSpeed()
-	{
-		float deltaX = Math.abs(this.position.x - movement.x);
-		float deltaY = Math.abs(this.position.y - movement.y);
-		return (float)Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
 	}
 
 	public KartGame getKartgame()

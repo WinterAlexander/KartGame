@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Timer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -70,7 +71,14 @@ public class KartGame extends ApplicationAdapter
 
 	private void start()
 	{
+		Vector2 start = race.getSpawnPoints().first();
 
+		kart.setPosition(start);
+		kart.setBaseLoc(start);
+		kart.setYaw(start.angleRad(race.getLines().first().getCenter()));
+		kart.setCurrentLap(0);
+		kart.setCurrentLineId(0);
+		race.start();
 	}
 
 	public Texture getTexture(String key)

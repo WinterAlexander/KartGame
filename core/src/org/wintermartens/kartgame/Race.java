@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
 /**
+ * Represents a race in the game
  *
  * Created by Alexander Winter on 2016-05-09.
  */
@@ -18,8 +19,6 @@ public class Race
 
 	private long start;
 	private long finish;
-
-	private float startDirection;
 
 	public Race(KartGame kartGame)
 	{
@@ -116,15 +115,5 @@ public class Race
 	public void setFinish(long finish)
 	{
 		this.finish = finish;
-	}
-
-	public float getStartDirection()
-	{
-		return startDirection;
-	}
-
-	public void setStartDirection(float startDirection)
-	{
-		this.startDirection = startDirection;
 	}
 }
