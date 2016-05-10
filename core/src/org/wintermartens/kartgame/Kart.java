@@ -38,19 +38,7 @@ public class Kart
 
 	private Vector2 baseLoc;
 
-	/**
-	 * Creates a new kart
-	 * @param kartgame
-	 * @param position Starting position
-	 * @param yaw direction
-	 * @param topSpeed
-	 * @param acceleration How fast the car accelerates till top speed (ex: 1.17 = 17% per second)
-	 * @param deceleration How fast the car decelerates till no movement (ex: 0.75 = -25% per second)
-	 * @param turning
-	 * @param brakeSpeed
-	 * @param currentLineId
-	 * @param currentLap
-	 */
+
 	public Kart(KartGame kartgame, Vector2 position, float yaw, float topSpeed, float acceleration, float deceleration, float turning, float brakeSpeed, int currentLineId, int currentLap)
 	{
 		this.kartgame = kartgame;
@@ -101,9 +89,15 @@ public class Kart
 
 		}
 		else if(Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isKeyPressed(Input.Keys.UP))
+		{
 			accelerate(deltaTime);
+		}
 		else
-			decelerate();
+		{
+			if(!movement.isZero())
+				decelerate(deltaTime, false);
+		}
+
 
 		if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
 			yaw += 0.1;
@@ -134,10 +128,18 @@ public class Kart
 			movement.setLength(movement.len() + acceleration);
 	}
 
-	private void decelerate()
+	private void decelerate(float deltaTime, boolean isBraking)
 	{
 		if(movement.len() < 2)
 			movement = new Vector2(0,0);
+
+		if(isBraking)
+		{
+			movement.setLength(movement.len() - deceleration * brakeSpeed);
+
+		}else{
+			movement.setLength(movement.len() - deceleration);
+		}
 	}
 
 	public void draw(SpriteBatch batch)
