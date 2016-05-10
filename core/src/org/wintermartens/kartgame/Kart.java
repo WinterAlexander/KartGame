@@ -60,7 +60,7 @@ public class Kart
 		this.topSpeed = 500f;
 		this.acceleration = 300f;
 		this.deceleration = 400f;
-		this.turning = 2f;
+		this.turning = 50f;
 		this.brakeSpeed = 4f;
 		this.reverseAcceleration = acceleration / 2;
 		this.reverseTopSpeed = topSpeed / 2;
