@@ -21,7 +21,7 @@ public class Kart
 
 	private float width, height;
 
-	private Vector2 movement;
+	private Vector2 movement, newMovement;
 	private float topSpeed;
 
 	private float acceleration;
@@ -56,11 +56,12 @@ public class Kart
 		this.width = 60;
 		this.height = 40;
 		this.movement = new Vector2();
+		this.newMovement = new Vector2();
 		this.topSpeed = 1000f;
 		this.acceleration = 1.2f;
 		this.deceleration = 0.8f;
 		this.turning = 0.5f;
-		this.brakeSpeed = 0.5f;
+		this.brakeSpeed = 1f;
 		this.reverseAcceleration = acceleration / 2;
 		this.reverseTopSpeed = topSpeed / 2;
 		this.currentLineId = currentLineId;
@@ -104,14 +105,10 @@ public class Kart
 	 */
 	private void accelerate(float deltaTime)
 	{
-		if(movement.isZero())
-		{
-			movement.set(acceleration, 0);
-			movement.setAngleRad(yaw);
-		}
+		newMovement.set(acceleration, 0);
+		newMovement.setAngleRad(yaw);
 
-		if(movement.len() < topSpeed)
-			movement.setLength(movement.len() + acceleration);
+		movement.add(newMovement);
 	}
 
 	private void decelerate(float deltaTime, boolean brake)
