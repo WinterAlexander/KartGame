@@ -59,9 +59,9 @@ public class Kart
 		this.newMovement = new Vector2();
 		this.topSpeed = 1000f;
 		this.acceleration = 200f;
-		this.deceleration = 100f;
+		this.deceleration = 250f;
 		this.turning = 2f;
-		this.brakeSpeed = 500f;
+		this.brakeSpeed = 7.5f;
 		this.reverseAcceleration = acceleration / 2;
 		this.reverseTopSpeed = topSpeed / 2;
 		this.currentLineId = currentLineId;
@@ -118,16 +118,18 @@ public class Kart
 
 	private void decelerate(float deltaTime, boolean brake)
 	{
-		if(movement.len() < 2)
+		if(movement.len() < 25)
 			movement = new Vector2(0,0);
 
 		if(brake)
 		{
 			movement.setLength(movement.len() - deceleration * brakeSpeed * deltaTime);
+			System.out.println(" (Braking)Length : " + movement.len());
 		}
 		else
 		{
 			movement.setLength(movement.len() - deceleration * deltaTime);
+			System.out.println("Length : " + movement.len());
 		}
 	}
 
