@@ -38,6 +38,19 @@ public class Kart
 
 	private Vector2 baseLoc;
 
+	/**
+	 * Creates a new kart
+	 * @param kartgame
+	 * @param position Starting position
+	 * @param yaw direction
+	 * @param topSpeed
+	 * @param acceleration How fast the car accelerates till top speed (ex: 1.17 = 17% per second)
+	 * @param deceleration How fast the car decelerates till no movement (ex: 0.75 = -25% per second)
+	 * @param turning
+	 * @param brakeSpeed
+	 * @param currentLineId
+	 * @param currentLap
+	 */
 	public Kart(KartGame kartgame, Vector2 position, float yaw, float topSpeed, float acceleration, float deceleration, float turning, float brakeSpeed, int currentLineId, int currentLap)
 	{
 		this.kartgame = kartgame;
@@ -71,7 +84,7 @@ public class Kart
 		if(clockwise)
 			dir = -1;
 
-		yaw += dir * turning * delta;
+		yaw += dir * turning * delta * this.getSpeed();
 	}
 
 	public void move(float deltaTime)
@@ -87,7 +100,8 @@ public class Kart
 			//then if the key is still pressed after 0.x seconds
 			//Start being in reverse mode
 
-		}else if(Gdx.input.isKeyPressed(Input.Keys.SPACE))
+		}else if(Gdx.input.isKeyPressed(Input.Keys.SPACE)
+		|| Gdx.input.isKeyPressed(Input.Keys.UP))
 		{
 			accelerate();
 		}
@@ -104,7 +118,19 @@ public class Kart
 	 */
 	private void accelerate()
 	{
-		position.add(movement.x, movement.y);
+		float newMovementX = movement.x;
+		float newMovementY = movement.y;
+
+		if(!(getSpeed() >= this.topSpeed))
+		{
+			newMovementX = movement.x * acceleration;
+			newMovementY = movement.y * acceleration;
+
+			movement.x *= acceleration;
+			movement.y *= acceleration;
+		}
+		System.out.println(movement.x);
+		position.add(newMovementX, newMovementY);
 	}
 
 	private void decelerate()
@@ -119,7 +145,14 @@ public class Kart
 
 	private Vector2 getDirection(float direction)
 	{
-		return new Vector2(position.x + MathUtils.cos(direction), position.y + MathUtils.sin(direction));
+		return new Vector2((position.x + MathUtils.cos(direction)) * 0.05f, (position.y + MathUtils.sin(direction)) * 0.05f);
+	}
+
+	public float getSpeed()
+	{
+		float deltaX = Math.abs(this.position.x - movement.x);
+		float deltaY = Math.abs(this.position.y - movement.y);
+		return (float)Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
 	}
 
 	public KartGame getKartgame()
