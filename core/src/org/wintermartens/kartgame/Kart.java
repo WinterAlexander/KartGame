@@ -38,20 +38,29 @@ public class Kart
 
 	private Vector2 baseLoc;
 
-
-	public Kart(KartGame kartgame, Vector2 position, float yaw, float topSpeed, float acceleration, float deceleration, float turning, float brakeSpeed, int currentLineId, int currentLap)
+	/**
+	 * Creates a new kart
+	 * @param kartgame
+	 * @param position Starting position
+	 * @param yaw direction
+	 * @param currentLineId
+	 * @param currentLap
+	 */
+	public Kart(KartGame kartgame, Vector2 position, float yaw, int currentLineId, int currentLap)
 	{
 		this.kartgame = kartgame;
 
 		this.texture = this.kartgame.getTexture("kart");
 		this.position = position;
 		this.yaw = yaw;
+		this.width = 60;
+		this.height = 40;
 		this.movement = new Vector2();
-		this.topSpeed = topSpeed;
-		this.acceleration = acceleration;
-		this.deceleration = deceleration;
-		this.turning = turning;
-		this.brakeSpeed = brakeSpeed;
+		this.topSpeed = 1000f;
+		this.acceleration = 1.2f;
+		this.deceleration = 0.8f;
+		this.turning = 0.5f;
+		this.brakeSpeed = 0.5f;
 		this.reverseAcceleration = acceleration / 2;
 		this.reverseTopSpeed = topSpeed / 2;
 		this.currentLineId = currentLineId;
@@ -66,44 +75,21 @@ public class Kart
 
 	public void turn(float delta, boolean clockwise)
 	{
-		int dir = 1;
-
-		if(clockwise)
-			dir = -1;
-
-		yaw += dir * turning * delta * movement.len();
+		yaw += (clockwise ? -1 : 1) * Math.PI * delta; //* movement.len() / topSpeed;
 	}
 
 	public void move(float deltaTime)
 	{
-		//Brake has priority over acceleration button
-		//Would be nice to be able to configure keys in menu
-		if(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)
-		|| Gdx.input.isKeyPressed(Input.Keys.DOWN))
-		{
-			//if speed is NOT very close to 0
-			//decelerate
-			//else speed == 0
-			//then if the key is still pressed after 0.x seconds
-			//Start being in reverse mode
-
-		}
-		else if(Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isKeyPressed(Input.Keys.UP))
-		{
+		if(Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isKeyPressed(Input.Keys.UP))
 			accelerate(deltaTime);
-		}
 		else
-		{
-			if(!movement.isZero())
-				decelerate(deltaTime, false);
-		}
+			decelerate(deltaTime, Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT));
 
+		if(Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A))
+			turn(deltaTime, false);
 
-		if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
-			yaw += 0.1;
-
-		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
-			yaw -= 0.1;
+		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D))
+			turn(deltaTime, true);
 
 		position.add(movement.x * deltaTime, movement.y * deltaTime);
 	}
@@ -128,23 +114,25 @@ public class Kart
 			movement.setLength(movement.len() + acceleration);
 	}
 
-	private void decelerate(float deltaTime, boolean isBraking)
+	private void decelerate(float deltaTime, boolean brake)
 	{
 		if(movement.len() < 2)
 			movement = new Vector2(0,0);
 
-		if(isBraking)
+		if(brake)
 		{
 			movement.setLength(movement.len() - deceleration * brakeSpeed);
-
-		}else{
+		}
+		else
+		{
 			movement.setLength(movement.len() - deceleration);
 		}
 	}
 
 	public void draw(SpriteBatch batch)
 	{
-		batch.draw(texture, position.x - 30, position.y - 20, 60, 40);
+		batch.draw(texture, position.x - width / 2, position.y - height / 2, width / 2, height / 2, width, height, 1, 1, MathUtils.radiansToDegrees * yaw, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
+		//batch.draw(texture, position.x - width / 2, position.y - height / 2, width, height);
 	}
 
 	private Vector2 getDirection(float direction)
@@ -180,6 +168,26 @@ public class Kart
 	public void setYaw(float yaw)
 	{
 		this.yaw = yaw;
+	}
+
+	public float getWidth()
+	{
+		return width;
+	}
+
+	public void setWidth(float width)
+	{
+		this.width = width;
+	}
+
+	public float getHeight()
+	{
+		return height;
+	}
+
+	public void setHeight(float height)
+	{
+		this.height = height;
 	}
 
 	public Vector2 getMovement()
