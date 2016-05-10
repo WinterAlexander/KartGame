@@ -61,7 +61,9 @@ public class Race
 		for(RaceLine line : lines)
 		{
 			batch.draw(kartGame.getTexture("line1"), line.getLoc1().x - 16, line.getLoc1().y - 16, 32, 32);
-			batch.draw(kartGame.getTexture("line2"), line.getLoc2().x - 16, line.getLoc2().y - 16, 32, 32);
+
+			if(line.getLoc2() != null)
+				batch.draw(kartGame.getTexture("line2"), line.getLoc2().x - 16, line.getLoc2().y - 16, 32, 32);
 		}
 
 	}
