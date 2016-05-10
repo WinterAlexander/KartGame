@@ -103,7 +103,7 @@ public class Kart
 		}else if(Gdx.input.isKeyPressed(Input.Keys.SPACE)
 		|| Gdx.input.isKeyPressed(Input.Keys.UP))
 		{
-			accelerate();
+			accelerate(deltaTime);
 		}
 
 	}
@@ -116,21 +116,19 @@ public class Kart
 	/**
 	 * Accelerates the kart up to topSpeed, is also used to decelerate while moving back
 	 */
-	private void accelerate()
+	private void accelerate(float deltaTime)
 	{
-		float newMovementX = movement.x;
-		float newMovementY = movement.y;
 
 		if(!(getSpeed() >= this.topSpeed))
 		{
-			newMovementX = movement.x * acceleration;
-			newMovementY = movement.y * acceleration;
-
 			movement.x *= acceleration;
 			movement.y *= acceleration;
+			System.out.println("Test");
 		}
+
+		System.out.println(getSpeed() + " " + topSpeed);
 		System.out.println(movement.x);
-		position.add(newMovementX, newMovementY);
+		position.add(movement.x * deltaTime, movement.y * deltaTime);
 	}
 
 	private void decelerate()
@@ -145,7 +143,7 @@ public class Kart
 
 	private Vector2 getDirection(float direction)
 	{
-		return new Vector2((position.x + MathUtils.cos(direction)) * 0.05f, (position.y + MathUtils.sin(direction)) * 0.05f);
+		return new Vector2((position.x + MathUtils.cos(direction)) * 3f, (position.y + MathUtils.sin(direction)) * 3f);
 	}
 
 	public float getSpeed()
