@@ -36,7 +36,7 @@ public class KartGame extends ApplicationAdapter
 		textures.put("line1", new Texture("debug_line1.png"));
 		textures.put("line2", new Texture("debug_line2.png"));
 		this.race = new Race(this);
-		this.kart = new Kart(this, new Vector2(), 0, 1000f, 1.2f, 1, 0, 0, 0, 0);
+		this.kart = new Kart(this, new Vector2(), 0, 100f, 1.2f, 0.80f, 0, 0, 0, 0);
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera(1280, 720);
 		camera.translate(1280 / 2, 720 / 2);

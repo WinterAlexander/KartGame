@@ -136,7 +136,8 @@ public class Kart
 
 	private void decelerate()
 	{
-
+		if(movement.len() < 2)
+			movement = new Vector2(0,0);
 	}
 
 	public void draw(SpriteBatch batch)
