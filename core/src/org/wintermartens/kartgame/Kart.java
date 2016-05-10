@@ -57,11 +57,11 @@ public class Kart
 		this.height = 40;
 		this.movement = new Vector2();
 		this.newMovement = new Vector2();
-		this.topSpeed = 1000f;
-		this.acceleration = 200f;
-		this.deceleration = 250f;
+		this.topSpeed = 500f;
+		this.acceleration = 300f;
+		this.deceleration = 400f;
 		this.turning = 2f;
-		this.brakeSpeed = 7.5f;
+		this.brakeSpeed = 4f;
 		this.reverseAcceleration = acceleration / 2;
 		this.reverseTopSpeed = topSpeed / 2;
 		this.currentLineId = currentLineId;
@@ -77,6 +77,7 @@ public class Kart
 	public void turn(float delta, boolean clockwise)
 	{
 		yaw += (clockwise ? -1 : 1) * Math.PI * delta; //* movement.len() / topSpeed;
+		movement.setLength(movement.len() - (turning * delta));
 	}
 
 	public void move(float deltaTime)
@@ -108,10 +109,10 @@ public class Kart
 		newMovement.set(acceleration * deltaTime * turning, 0);
 		newMovement.setAngleRad(yaw);
 
+		movement.setLength(movement.len() - deltaTime * turning);
+
 		if(movement.len() + newMovement.len() > topSpeed)
 			movement.setLength(topSpeed - newMovement.len());
-		//else if(movement.len() - newMovement.len() > 0)
-		//	movement.setLength(movement.len() - newMovement.len());
 
 		movement.add(newMovement);
 	}
@@ -119,18 +120,12 @@ public class Kart
 	private void decelerate(float deltaTime, boolean brake)
 	{
 		if(movement.len() < 25)
-			movement = new Vector2(0,0);
+		{
+			movement = new Vector2(0, 0);
+			return;
+		}
 
-		if(brake)
-		{
-			movement.setLength(movement.len() - deceleration * brakeSpeed * deltaTime);
-			System.out.println(" (Braking)Length : " + movement.len());
-		}
-		else
-		{
-			movement.setLength(movement.len() - deceleration * deltaTime);
-			System.out.println("Length : " + movement.len());
-		}
+		movement.setLength(movement.len() - deceleration * deltaTime * (brake ? brakeSpeed : 1));
 	}
 
 	public void draw(SpriteBatch batch)
