@@ -58,10 +58,10 @@ public class Kart
 		this.movement = new Vector2();
 		this.newMovement = new Vector2();
 		this.topSpeed = 1000f;
-		this.acceleration = 1.2f;
-		this.deceleration = 0.8f;
-		this.turning = 0.5f;
-		this.brakeSpeed = 1f;
+		this.acceleration = 200f;
+		this.deceleration = 100f;
+		this.turning = 2f;
+		this.brakeSpeed = 500f;
 		this.reverseAcceleration = acceleration / 2;
 		this.reverseTopSpeed = topSpeed / 2;
 		this.currentLineId = currentLineId;
@@ -105,8 +105,13 @@ public class Kart
 	 */
 	private void accelerate(float deltaTime)
 	{
-		newMovement.set(acceleration, 0);
+		newMovement.set(acceleration * deltaTime * turning, 0);
 		newMovement.setAngleRad(yaw);
+
+		if(movement.len() + newMovement.len() > topSpeed)
+			movement.setLength(topSpeed - newMovement.len());
+		//else if(movement.len() - newMovement.len() > 0)
+		//	movement.setLength(movement.len() - newMovement.len());
 
 		movement.add(newMovement);
 	}
@@ -118,17 +123,25 @@ public class Kart
 
 		if(brake)
 		{
-			movement.setLength(movement.len() - deceleration * brakeSpeed);
+			movement.setLength(movement.len() - deceleration * brakeSpeed * deltaTime);
 		}
 		else
 		{
-			movement.setLength(movement.len() - deceleration);
+			movement.setLength(movement.len() - deceleration * deltaTime);
 		}
 	}
 
 	public void draw(SpriteBatch batch)
 	{
-		batch.draw(texture, position.x - width / 2, position.y - height / 2, width / 2, height / 2, width, height, 1, 1, MathUtils.radiansToDegrees * yaw, 0, 0, texture.getWidth(), texture.getHeight(), false, false);
+		batch.draw(texture,
+				position.x - width / 2, position.y - height / 2,
+				width / 2, height / 2,
+				width, height,
+				1, 1,
+				MathUtils.radiansToDegrees * yaw,
+				0, 0,
+				texture.getWidth(), texture.getHeight(),
+				false, false);
 		//batch.draw(texture, position.x - width / 2, position.y - height / 2, width, height);
 	}
 
