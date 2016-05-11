@@ -77,7 +77,9 @@ public class Kart
 
 		fuel = new ParticleEffect();
 		fuel.load(Gdx.files.internal("Effects/fuel.p"), Gdx.files.internal("Effects"));
+
 		fuel.start();
+		fuel.setDuration(Integer.MAX_VALUE);
 
 	}
 
@@ -156,7 +158,6 @@ public class Kart
 
 	public void draw(SpriteBatch batch)
 	{
-
 		if(fuel.isComplete())
 			fuel.reset();
 
