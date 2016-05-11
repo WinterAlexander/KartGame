@@ -3,6 +3,7 @@ package org.wintermartens.kartgame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
@@ -108,7 +109,20 @@ public class GameInput implements InputProcessor
 	@Override
 	public boolean scrolled(int amount)
 	{
-		return false;
+		OrthographicCamera camera = game.getCamera();
+
+		if(amount == 0)
+			return false;
+
+		if(amount > 0 && camera.zoom < 2)
+			camera.zoom *= 1.1f;
+
+		if(amount < 0 && camera.zoom > 0.5)
+			camera.zoom /= 1.1f;
+
+		System.out.println(camera.zoom);
+
+		return true;
 	}
 
 	//endregion

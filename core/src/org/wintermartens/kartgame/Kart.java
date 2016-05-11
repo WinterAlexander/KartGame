@@ -79,10 +79,6 @@ public class Kart
 		fuel.load(Gdx.files.internal("Effects/fuel.p"), Gdx.files.internal("Effects"));
 		fuel.start();
 
-
-
-
-
 	}
 
 	public void update(float deltaTime)
