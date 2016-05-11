@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class DesktopLauncher
 {
-	public static void main (String[] arg)
+	public static void main(String[] arg)
 	{
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 
@@ -16,6 +16,7 @@ public class DesktopLauncher
 
 		config.width = 1280;
 		config.height = 720;
+		config.samples = 2;
 
 		while(config.width > screenSize.width * 7 / 8 || config.height > screenSize.height * 7 / 8)
 		{

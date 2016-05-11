@@ -87,12 +87,18 @@ public class Kart
 
 	public void update(float deltaTime)
 	{
+
+		float previousYaw = yaw;
+
 		move(deltaTime);
-		fuel.setPosition(this.position.x, this.position.y);
+		kartgame.getCamera().position.set(position.x, position.y, 0);
+		kartgame.getCamera().rotate(-(yaw - previousYaw) * MathUtils.radiansToDegrees);
+		fuel.setPosition(position.x, position.y);
 		//fuel.scaleEffect(Math.max(movement.len() / topSpeed * 10, 0.01f));
 		//il reste des tweaks a faire au niveau du sable
 
-		for (int i = 0; i < fuel.getEmitters().size; i++) { //get the list of emitters - things that emit particles
+		for (int i = 0; i < fuel.getEmitters().size; i++)
+		{ //get the list of emitters - things that emit particles
 			fuel.getEmitters().get(i).getAngle().setLow(MathUtils.radiansToDegrees * yaw - 180); //low is the minimum rotation
 			fuel.getEmitters().get(i).getAngle().setHigh(MathUtils.radiansToDegrees * yaw - 180); //high is the max rotation
 		}

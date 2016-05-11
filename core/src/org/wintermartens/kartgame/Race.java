@@ -52,7 +52,7 @@ public class Race
 
 	public void draw(SpriteBatch batch)
 	{
-		batch.draw(kartGame.getTexture("map"), 0, 0, 1280, 720);
+		batch.draw(kartGame.getTexture("map"), 0, 0, 1280 * 4, 720 * 4);
 
 		for(Vector2 spawnPoint : spawnPoints)
 			batch.draw(kartGame.getTexture("spawnpoint"), spawnPoint.x - 16, spawnPoint.y - 16, 32, 32);

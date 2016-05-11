@@ -35,17 +35,21 @@ public class KartGame extends ApplicationAdapter
 		textures.put("spawnpoint", new Texture("debug_spawnpoint.png"));
 		textures.put("line1", new Texture("debug_line1.png"));
 		textures.put("line2", new Texture("debug_line2.png"));
+
+
 		this.race = new Race(this);
-		this.kart = new Kart(this, new Vector2(50, 200), 0, 0, 0);
+		this.kart = new Kart(this, new Vector2(1280 / 2 - 30, 720 / 2 - 20), 0, 0, 0);
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera(1280, 720);
-		camera.translate(1280 / 2, 720 / 2);
+		camera.translate(1280 / 2, 720 / 4);
+		camera.rotate(90);
+		camera.zoom = 1.0f;
 	}
 
 	@Override
 	public void render()
 	{
-		Gdx.gl.glClearColor(1, 1, 1, 1);
+		Gdx.gl.glClearColor(203 / 255f, 145 / 255f, 86 / 255f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
