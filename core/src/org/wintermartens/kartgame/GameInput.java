@@ -120,8 +120,6 @@ public class GameInput implements InputProcessor
 		if(amount < 0 && camera.zoom > 0.5)
 			camera.zoom /= 1.1f;
 
-		System.out.println(camera.zoom);
-
 		return true;
 	}
 

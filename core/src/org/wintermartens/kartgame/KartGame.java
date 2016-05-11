@@ -36,6 +36,9 @@ public class KartGame extends ApplicationAdapter
 		textures.put("line1", new Texture("debug_line1.png"));
 		textures.put("line2", new Texture("debug_line2.png"));
 
+		for(Texture texture : textures.values())
+			texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Nearest);
+
 
 		this.race = new Race(this);
 		this.kart = new Kart(this, new Vector2(1280 / 2 - 30, 720 / 2 - 20), 0, 0, 0);
